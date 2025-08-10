@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { globalStyles, colors, dimensions } from '../styles/globalStyles';
 import RouletteWheel from '../components/RouletteWheel';
+import SpinPromptModal from '../components/SpinPromptModal';
 import StorageService from '../utils/StorageService';
 
 const HomeRouletteScreen = () => {
@@ -22,8 +23,12 @@ const HomeRouletteScreen = () => {
   const [selectedFood, setSelectedFood] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [spinCount, setSpinCount] = useState(0);
+  const [showSpinPrompt, setShowSpinPrompt] = useState(false);
   const fadeAnim = useState(new Animated.Value(0))[0];
   const scaleAnim = useState(new Animated.Value(0.8))[0];
+  const promptFadeAnim = useState(new Animated.Value(0))[0];
+  const promptScaleAnim = useState(new Animated.Value(0.8))[0];
   const rouletteRef = useRef();
 
   useEffect(() => {
@@ -35,6 +40,7 @@ const HomeRouletteScreen = () => {
     React.useCallback(() => {
       loadHomeFoods();
       setSelectedFood(null); // Reset result when switching tabs
+      setSpinCount(0); // Reset spin count when switching tabs
     }, [])
   );
 
@@ -61,6 +67,29 @@ const HomeRouletteScreen = () => {
     }
   }, [selectedFood]);
 
+  useEffect(() => {
+    if (showSpinPrompt) {
+      // Animate prompt display
+      Animated.parallel([
+        Animated.spring(promptScaleAnim, {
+          toValue: 1,
+          useNativeDriver: true,
+          tension: 150,
+          friction: 8,
+        }),
+        Animated.timing(promptFadeAnim, {
+          toValue: 1,
+          duration: 400,
+          easing: Easing.out(Easing.quad),
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      promptScaleAnim.setValue(0.8);
+      promptFadeAnim.setValue(0);
+    }
+  }, [showSpinPrompt]);
+
   const loadHomeFoods = async () => {
     try {
       await StorageService.initializeData();
@@ -84,14 +113,31 @@ const HomeRouletteScreen = () => {
       Alert.alert('No Foods Available', 'Please add some food items first in the Manage tab.');
       return;
     }
+    
+    // Show the fun messaging system
+    setShowSpinPrompt(true);
+  };
+
+  const handleSpinAccept = () => {
+    setShowSpinPrompt(false);
     setSelectedFood(null);
+    
+    // Increment spin count for progressively funnier messages
+    setSpinCount(prev => prev + 1);
+    
     if (rouletteRef.current) {
       rouletteRef.current.spin();
     }
   };
 
+  const handleSpinCancel = () => {
+    setShowSpinPrompt(false);
+    // Don't increment spin count if they cancel
+  };
+
   const resetResult = () => {
     setSelectedFood(null);
+    // DON'T reset spin count here - keep tracking attempts until they switch tabs
   };
 
   if (loading) {
@@ -174,6 +220,16 @@ const HomeRouletteScreen = () => {
             </>
           )}
         </ScrollView>
+
+        {/* Spin Prompt Modal - Fun messaging system */}
+        <SpinPromptModal
+          visible={showSpinPrompt}
+          spinCount={spinCount}
+          onAccept={handleSpinAccept}
+          onCancel={handleSpinCancel}
+          fadeAnim={promptFadeAnim}
+          scaleAnim={promptScaleAnim}
+        />
 
         {/* Result Modal - Positioned absolutely to center on screen */}
         {selectedFood && (

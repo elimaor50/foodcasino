@@ -105,5 +105,7 @@ export const globalStyles = StyleSheet.create({
 export const dimensions = {
   width,
   height,
-  rouletteSize: Math.min(width, height) * 0.8,
+  rouletteSize: Math.min(width * 0.75, height * 0.35), // More responsive roulette size
+  isSmallScreen: height < 700,
+  isTallScreen: height > 800,
 };

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <radialGradient id="bgGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f0f1e;stop-opacity:1" />
+    </radialGradient>
+    <radialGradient id="centerGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="segmentRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dc2626;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#991b1b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="segmentBlack" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#374151;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1f2937;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="segmentGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <circle cx="512" cy="512" r="512" fill="url(#bgGradient)"/>
+  
+  <!-- Outer golden ring -->
+  <circle cx="512" cy="512" r="450" fill="none" stroke="#ffd700" stroke-width="8"/>
+  <circle cx="512" cy="512" r="430" fill="none" stroke="#ff6b35" stroke-width="4"/>
+  
+  <!-- Roulette segments (8 segments for clean icon look) -->
+  <!-- Segment 1 - Pizza -->
+  <path d="M 512 512 L 512 62 A 450 450 0 0 1 830.26 194.74 Z" fill="url(#segmentRed)" stroke="#ffd700" stroke-width="2"/>
+  
+  <!-- Segment 2 - Pasta -->
+  <path d="M 512 512 L 830.26 194.74 A 450 450 0 0 1 830.26 829.26 Z" fill="url(#segmentBlack)" stroke="#ffd700" stroke-width="2"/>
+  
+  <!-- Segment 3 - Salad -->
+  <path d="M 512 512 L 830.26 829.26 A 450 450 0 0 1 512 962 Z" fill="url(#segmentGreen)" stroke="#ffd700" stroke-width="2"/>
+  
+  <!-- Segment 4 - Burger -->
+  <path d="M 512 512 L 512 962 A 450 450 0 0 1 193.74 829.26 Z" fill="url(#segmentRed)" stroke="#ffd700" stroke-width="2"/>
+  
+  <!-- Segment 5 - Tacos -->
+  <path d="M 512 512 L 193.74 829.26 A 450 450 0 0 1 193.74 194.74 Z" fill="url(#segmentBlack)" stroke="#ffd700" stroke-width="2"/>
+  
+  <!-- Segment 6 - Sushi -->
+  <path d="M 512 512 L 193.74 194.74 A 450 450 0 0 1 512 62 Z" fill="url(#segmentGreen)" stroke="#ffd700" stroke-width="2"/>
+  
+  <!-- Food icons in segments -->
+  <!-- Pizza slice -->
+  <text x="650" y="130" font-family="Arial" font-size="80" text-anchor="middle" fill="white">🍕</text>
+  
+  <!-- Pasta -->
+  <text x="830" y="520" font-family="Arial" font-size="80" text-anchor="middle" fill="white">🍝</text>
+  
+  <!-- Salad -->
+  <text x="650" y="900" font-family="Arial" font-size="80" text-anchor="middle" fill="white">🥗</text>
+  
+  <!-- Burger -->
+  <text x="370" y="900" font-family="Arial" font-size="80" text-anchor="middle" fill="white">🍔</text>
+  
+  <!-- Tacos -->
+  <text x="190" y="520" font-family="Arial" font-size="80" text-anchor="middle" fill="white">🌮</text>
+  
+  <!-- Sushi -->
+  <text x="370" y="130" font-family="Arial" font-size="80" text-anchor="middle" fill="white">🍣</text>
+  
+  <!-- Center circle with gradient -->
+  <circle cx="512" cy="512" r="120" fill="url(#centerGradient)" stroke="#ffd700" stroke-width="6"/>
+  
+  <!-- Roulette ball -->
+  <circle cx="600" cy="200" r="25" fill="white" stroke="#ffd700" stroke-width="3">
+    <animate attributeName="cx" values="600;400;600" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="200;824;200" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Center logo text -->
+  <text x="512" y="490" font-family="Arial Black" font-size="60" font-weight="bold" text-anchor="middle" fill="white">FOOD</text>
+  <text x="512" y="550" font-family="Arial Black" font-size="40" font-weight="bold" text-anchor="middle" fill="#ffd700">CASINO</text>
+  
+  <!-- Decorative stars -->
+  <text x="100" y="100" font-family="Arial" font-size="40" fill="#ffd700">⭐</text>
+  <text x="924" y="100" font-family="Arial" font-size="40" fill="#ffd700">⭐</text>
+  <text x="100" y="924" font-family="Arial" font-size="40" fill="#ffd700">⭐</text>
+  <text x="924" y="924" font-family="Arial" font-size="40" fill="#ffd700">⭐</text>
+</svg>

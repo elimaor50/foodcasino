@@ -10,6 +10,7 @@ import {
   Easing,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 import { globalStyles, colors } from '../styles/globalStyles';
 import RouletteWheel from '../components/RouletteWheel';
 import StorageService from '../utils/StorageService';
@@ -26,6 +27,14 @@ const HomeRouletteScreen = () => {
   useEffect(() => {
     loadHomeFoods();
   }, []);
+
+  // REFRESH WHEN TAB CHANGES - FIXES THE REFRESH ISSUE
+  useFocusEffect(
+    React.useCallback(() => {
+      loadHomeFoods();
+      setSelectedFood(null); // Reset result when switching tabs
+    }, [])
+  );
 
   useEffect(() => {
     if (selectedFood) {

@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -21,7 +20,6 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1a2e"
       },
-      "edgeToEdgeEnabled": true,
       "package": "com.foodcasino.roulette"
     },
     "web": {
@@ -34,6 +32,13 @@
           "initialOrientation": "PORTRAIT_UP"
         }
       ]
-    ]
+    ],
+    "platforms": ["android", "ios", "web"],
+    "sdkVersion": "53.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "d9c2491a-a6df-4257-b5c6-2a26115addfd"
+      }
+    }
   }
 }

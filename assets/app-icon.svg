@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <circle cx="512" cy="512" r="512" fill="#1a1a2e"/>
+  
+  <!-- Outer golden ring -->
+  <circle cx="512" cy="512" r="450" fill="none" stroke="#ffd700" stroke-width="12"/>
+  
+  <!-- Roulette segments (simplified for icon) -->
+  <!-- Top segment -->
+  <path d="M 512 512 L 512 62 A 450 450 0 0 1 737.5 186.5 Z" fill="#dc2626" stroke="#ffd700" stroke-width="3"/>
+  <path d="M 512 512 L 737.5 186.5 A 450 450 0 0 1 962 512 Z" fill="#374151" stroke="#ffd700" stroke-width="3"/>
+  <path d="M 512 512 L 962 512 A 450 450 0 0 1 737.5 837.5 Z" fill="#059669" stroke="#ffd700" stroke-width="3"/>
+  <path d="M 512 512 L 737.5 837.5 A 450 450 0 0 1 512 962 Z" fill="#dc2626" stroke="#ffd700" stroke-width="3"/>
+  <path d="M 512 512 L 512 962 A 450 450 0 0 1 286.5 837.5 Z" fill="#374151" stroke="#ffd700" stroke-width="3"/>
+  <path d="M 512 512 L 286.5 837.5 A 450 450 0 0 1 62 512 Z" fill="#059669" stroke="#ffd700" stroke-width="3"/>
+  <path d="M 512 512 L 62 512 A 450 450 0 0 1 286.5 186.5 Z" fill="#dc2626" stroke="#ffd700" stroke-width="3"/>
+  <path d="M 512 512 L 286.5 186.5 A 450 450 0 0 1 512 62 Z" fill="#374151" stroke="#ffd700" stroke-width="3"/>
+  
+  <!-- Center circle -->
+  <circle cx="512" cy="512" r="150" fill="#1a1a2e" stroke="#ffd700" stroke-width="8"/>
+  
+  <!-- Logo elements -->
+  <!-- Food emoji in center -->
+  <text x="512" y="450" font-family="Arial" font-size="80" text-anchor="middle" fill="#ffd700">🎰</text>
+  
+  <!-- App name -->
+  <text x="512" y="520" font-family="Arial Black" font-size="48" font-weight="bold" text-anchor="middle" fill="white">FOOD</text>
+  <text x="512" y="570" font-family="Arial Black" font-size="32" font-weight="bold" text-anchor="middle" fill="#ffd700">CASINO</text>
+  
+  <!-- Roulette ball -->
+  <circle cx="600" cy="150" r="20" fill="white" stroke="#ffd700" stroke-width="3"/>
+  
+  <!-- Small decorative elements -->
+  <circle cx="150" cy="150" r="15" fill="#ffd700"/>
+  <circle cx="874" cy="150" r="15" fill="#ffd700"/>
+  <circle cx="150" cy="874" r="15" fill="#ffd700"/>
+  <circle cx="874" cy="874" r="15" fill="#ffd700"/>
+</svg>

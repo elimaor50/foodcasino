@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Casino Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        canvas {
+            border: 2px solid #ffd700;
+            margin: 20px;
+        }
+        button {
+            background: #ffd700;
+            color: #1a1a2e;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        button:hover {
+            background: #ff6b35;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎰 Food Casino Icon Generator</h1>
+    <p>This will generate your app icon as PNG files</p>
+    
+    <canvas id="iconCanvas" width="1024" height="1024"></canvas>
+    
+    <div>
+        <button onclick="generateIcon(1024)">Generate 1024x1024 (Main Icon)</button>
+        <button onclick="generateIcon(512)">Generate 512x512 (Android)</button>
+        <button onclick="generateIcon(180)">Generate 180x180 (iOS)</button>
+        <button onclick="generateIcon(192)">Generate 192x192 (Adaptive)</button>
+    </div>
+    
+    <script>
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const center = size / 2;
+            const radius = size * 0.44;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            canvas.width = size;
+            canvas.height = size;
+            
+            // Background
+            const bgGradient = ctx.createRadialGradient(center, center, 0, center, center, center);
+            bgGradient.addColorStop(0, '#1a1a2e');
+            bgGradient.addColorStop(1, '#0f0f1e');
+            ctx.fillStyle = bgGradient;
+            ctx.beginPath();
+            ctx.arc(center, center, center, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Outer ring
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = size * 0.012;
+            ctx.beginPath();
+            ctx.arc(center, center, radius + size * 0.02, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Roulette segments
+            const colors = ['#dc2626', '#374151', '#059669', '#dc2626', '#374151', '#059669', '#dc2626', '#374151'];
+            const segmentAngle = (2 * Math.PI) / 8;
+            
+            for (let i = 0; i < 8; i++) {
+                const startAngle = i * segmentAngle - Math.PI / 2;
+                const endAngle = (i + 1) * segmentAngle - Math.PI / 2;
+                
+                ctx.fillStyle = colors[i];
+                ctx.beginPath();
+                ctx.moveTo(center, center);
+                ctx.arc(center, center, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fill();
+                
+                ctx.strokeStyle = '#ffd700';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+            
+            // Center circle
+            const centerGradient = ctx.createRadialGradient(center, center, 0, center, center, size * 0.1);
+            centerGradient.addColorStop(0, '#ffd700');
+            centerGradient.addColorStop(1, '#ff6b35');
+            ctx.fillStyle = centerGradient;
+            ctx.beginPath();
+            ctx.arc(center, center, size * 0.15, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = size * 0.006;
+            ctx.stroke();
+            
+            // Ball
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(center + radius * 0.7, center - radius * 0.4, size * 0.02, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Text
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.08}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.fillText('FOOD', center, center - size * 0.02);
+            
+            ctx.fillStyle = '#ffd700';
+            ctx.font = `bold ${size * 0.05}px Arial`;
+            ctx.fillText('CASINO', center, center + size * 0.06);
+        }
+        
+        function generateIcon(size) {
+            const canvas = document.getElementById('iconCanvas');
+            drawIcon(canvas, size);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = `food-casino-icon-${size}x${size}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Draw initial icon
+        window.onload = () => {
+            generateIcon(1024);
+        };
+    </script>
+</body>
+</html>

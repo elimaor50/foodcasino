@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 Food Casino Roulette</title>
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #FFD700;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+        
+        .casino-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .casino-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            margin: 0;
+        }
+        
+        .roulette-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+        }
+        
+        .roulette-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                #FF0000 0deg 30deg,
+                #000000 30deg 60deg,
+                #00FF00 60deg 90deg,
+                #FFD700 90deg 120deg,
+                #FF0000 120deg 150deg,
+                #000000 150deg 180deg,
+                #00FF00 180deg 210deg,
+                #FFD700 210deg 240deg,
+                #FF0000 240deg 270deg,
+                #000000 270deg 300deg,
+                #00FF00 300deg 330deg,
+                #FFD700 330deg 360deg
+            );
+            border: 8px solid #FFD700;
+            transition: transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .roulette-center {
+            width: 60px;
+            height: 60px;
+            background: #FFD700;
+            border-radius: 50%;
+            border: 4px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+            z-index: 10;
+        }
+        
+        .roulette-ball {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+            z-index: 5;
+        }
+        
+        .spin-button {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border: none;
+            border-radius: 15px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            margin: 20px;
+            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .spin-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+        }
+        
+        .spin-button:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 15px;
+            padding: 5px;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            background: transparent;
+            border: none;
+            color: #FFD700;
+            cursor: pointer;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background: #FFD700;
+            color: #000;
+        }
+        
+        .food-list {
+            display: none;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+        
+        .food-list.active {
+            display: block;
+        }
+        
+        .food-item {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #FFD700;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 5px 0;
+            text-align: center;
+        }
+        
+        .manage-section {
+            margin: 20px;
+            text-align: center;
+        }
+        
+        .add-input {
+            padding: 10px;
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.7);
+            color: #FFD700;
+            margin: 5px;
+        }
+        
+        .add-button {
+            background: #00FF00;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="casino-header">
+        <h1 class="casino-title">🎰 Food Casino Roulette 🎰</h1>
+        <p>Let the casino decide what you eat!</p>
+    </div>
+    
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('home')">🏠 Home Foods</button>
+        <button class="tab" onclick="switchTab('restaurant')">🍴 Restaurants</button>
+    </div>
+    
+    <div class="roulette-container">
+        <div class="roulette-wheel" id="roulette">
+            <div class="roulette-ball" id="ball"></div>
+            <div class="roulette-center">🎲</div>
+        </div>
+    </div>
+    
+    <button class="spin-button" onclick="spinRoulette()">🎯 SPIN THE WHEEL!</button>
+    
+    <div class="result" id="result">
+        Spin the wheel to discover your meal! 🎰
+    </div>
+    
+    <div class="food-list active" id="home-foods">
+        <h3>🏠 Home Foods</h3>
+        <div id="home-list"></div>
+    </div>
+    
+    <div class="food-list" id="restaurant-foods">
+        <h3>🍴 Restaurants</h3>
+        <div id="restaurant-list"></div>
+    </div>
+    
+    <div class="manage-section">
+        <h3>📝 Manage Items</h3>
+        <input type="text" id="newItem" class="add-input" placeholder="Add new food/restaurant...">
+        <button class="add-button" onclick="addItem()">➕ Add</button>
+    </div>
+
+    <script>
+        let currentTab = 'home';
+        let isSpinning = false;
+        
+        // Default food items
+        let homeFoods = ['🍕 Pizza', '🍔 Burger', '🍝 Pasta', '🥗 Salad', '🍲 Soup', '🌮 Taco', '🍜 Ramen', '🥙 Wrap'];
+        let restaurants = ['🍕 Pizza Hut', '🍔 McDonald\'s', '🍝 Italian Bistro', '🍣 Sushi Place', '🌮 Taco Bell', '🍗 KFC', '☕ Starbucks', '🍰 Bakery'];
+        
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+            
+            // Update food lists
+            document.querySelectorAll('.food-list').forEach(list => list.classList.remove('active'));
+            document.getElementById(`${tab}-foods`).classList.add('active');
+            
+            updateFoodList();
+        }
+        
+        function updateFoodList() {
+            const foods = currentTab === 'home' ? homeFoods : restaurants;
+            const container = document.getElementById(`${currentTab}-list`);
+            
+            container.innerHTML = foods.map((food, index) => 
+                `<div class="food-item">
+                    ${food} 
+                    <button onclick="removeItem(${index})" style="background: #FF0000; border: none; border-radius: 4px; color: white; padding: 2px 6px; margin-left: 10px; cursor: pointer;">✖</button>
+                </div>`
+            ).join('');
+        }
+        
+        function addItem() {
+            const input = document.getElementById('newItem');
+            const newItem = input.value.trim();
+            
+            if (newItem) {
+                if (currentTab === 'home') {
+                    homeFoods.push(newItem);
+                } else {
+                    restaurants.push(newItem);
+                }
+                input.value = '';
+                updateFoodList();
+                saveToStorage();
+            }
+        }
+        
+        function removeItem(index) {
+            if (currentTab === 'home') {
+                homeFoods.splice(index, 1);
+            } else {
+                restaurants.splice(index, 1);
+            }
+            updateFoodList();
+            saveToStorage();
+        }
+        
+        function spinRoulette() {
+            if (isSpinning) return;
+            
+            isSpinning = true;
+            const wheel = document.getElementById('roulette');
+            const ball = document.getElementById('ball');
+            const result = document.getElementById('result');
+            
+            // Get current food list
+            const foods = currentTab === 'home' ? homeFoods : restaurants;
+            if (foods.length === 0) {
+                result.textContent = `No ${currentTab === 'home' ? 'home foods' : 'restaurants'} added yet!`;
+                isSpinning = false;
+                return;
+            }
+            
+            // Random spin amount (multiple full rotations)
+            const spins = 5 + Math.random() * 5; // 5-10 full rotations
+            const finalRotation = spins * 360;
+            
+            // Spin the wheel
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+            
+            // Simulate ball bouncing
+            let bounceCount = 0;
+            const maxBounces = 8;
+            
+            function bounceBall() {
+                if (bounceCount < maxBounces) {
+                    const angle = (bounceCount / maxBounces) * 360 + Math.random() * 60 - 30;
+                    const radius = 120 - (bounceCount * 8);
+                    const x = Math.cos(angle * Math.PI / 180) * radius + 150;
+                    const y = Math.sin(angle * Math.PI / 180) * radius + 150;
+                    
+                    ball.style.left = x + 'px';
+                    ball.style.top = y + 'px';
+                    
+                    bounceCount++;
+                    setTimeout(bounceBall, 200);
+                } else {
+                    // Final result
+                    const selectedFood = foods[Math.floor(Math.random() * foods.length)];
+                    result.innerHTML = `
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.5em; margin-bottom: 10px;">🎉 Winner! 🎉</div>
+                            <div style="font-size: 1.3em; color: #FFD700;">${selectedFood}</div>
+                            <div style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">The casino has decided! Enjoy your meal! 🎰</div>
+                        </div>
+                    `;
+                    
+                    // Reset ball position
+                    setTimeout(() => {
+                        ball.style.left = '50%';
+                        ball.style.top = '20px';
+                        ball.style.transform = 'translateX(-50%)';
+                        isSpinning = false;
+                    }, 1000);
+                }
+            }
+            
+            // Start bouncing after wheel starts spinning
+            setTimeout(bounceBall, 500);
+        }
+        
+        function saveToStorage() {
+            localStorage.setItem('foodCasinoHomeFoods', JSON.stringify(homeFoods));
+            localStorage.setItem('foodCasinoRestaurants', JSON.stringify(restaurants));
+        }
+        
+        function loadFromStorage() {
+            const savedHomeFoods = localStorage.getItem('foodCasinoHomeFoods');
+            const savedRestaurants = localStorage.getItem('foodCasinoRestaurants');
+            
+            if (savedHomeFoods) {
+                homeFoods = JSON.parse(savedHomeFoods);
+            }
+            if (savedRestaurants) {
+                restaurants = JSON.parse(savedRestaurants);
+            }
+        }
+        
+        // Initialize
+        loadFromStorage();
+        updateFoodList();
+        
+        // Allow Enter key to add items
+        document.getElementById('newItem').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addItem();
+            }
+        });
+    </script>
+</body>
+</html>

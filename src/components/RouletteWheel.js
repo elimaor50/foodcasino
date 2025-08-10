@@ -67,79 +67,116 @@ const RouletteWheel = forwardRef(({ items, onSpinComplete, isSpinning, setIsSpin
     return triangleIndex % items.length;
   };
 
-  // REAL ROULETTE PHYSICS - Ball position determines winner
+  // REAL ROULETTE PHYSICS - Ball spins with wheel then settles
   const spin = () => {
     if (isSpinning || items.length === 0) return;
 
     setIsSpinning(true);
     setSelectedItem(null);
 
-    // 1. SPIN THE WHEEL - Random rotation
-    const wheelSpins = (Math.random() * 3 + 4) * 360; // 4-7 full rotations
-    const finalWheelRotation = wheelSpins;
+    // Reset ball to starting position (top of wheel)
+    const startRadius = RADIUS - 10;
+    ballPositionX.setValue(CENTER);
+    ballPositionY.setValue(CENTER - startRadius);
 
-    // 2. ANIMATE WHEEL SPINNING
+    // 1. WHEEL PHYSICS - Spins and gradually slows down
+    const wheelSpins = (Math.random() * 3 + 5) * 360; // 5-8 full rotations
+    const wheelDuration = 4500; // Wheel spins for 4.5 seconds
+
+    // 2. BALL PHYSICS - Starts spinning with wheel, then continues longer
+    const ballInitialSpeed = wheelSpins + (Math.random() * 2 + 3) * 360; // Ball spins faster initially
+    const ballTotalSpins = ballInitialSpeed + (Math.random() * 1.5 + 1) * 360; // Extra spins after wheel slows
+    const ballDuration = wheelDuration + 2000; // Ball continues for 2 more seconds
+    
+    // Ball will settle at whatever position it naturally reaches
+    const settleRadius = RADIUS - 25;
+
+    // 3. START WHEEL ANIMATION
     Animated.timing(rotationValue, {
-      toValue: finalWheelRotation,
-      duration: 4000,
+      toValue: wheelSpins,
+      duration: wheelDuration,
       useNativeDriver: true,
     }).start();
 
-    // 3. BALL PHYSICS - Independent of wheel, lands randomly
-    const ballFinalAngle = Math.random() * 360; // Ball lands at random angle
-    const ballRadius = RADIUS - 25; // Ball settles near edge
+    // 4. BALL ANIMATION - Three phases
+    let currentBallAngle = 0;
+    let ballRadius = startRadius;
+    const animationInterval = 16; // 60fps
+    let elapsedTime = 0;
 
-    // Convert angle to X,Y coordinates
-    const ballFinalX = CENTER + Math.cos((ballFinalAngle - 90) * Math.PI / 180) * ballRadius;
-    const ballFinalY = CENTER + Math.sin((ballFinalAngle - 90) * Math.PI / 180) * ballRadius;
+    const ballTimer = setInterval(() => {
+      elapsedTime += animationInterval;
+      const progress = elapsedTime / ballDuration;
 
-    // 4. BALL ANIMATION - Realistic bouncing then settling
-    let bounceCount = 0;
-    const maxBounces = 12;
-    
-    const bounceTimer = setInterval(() => {
-      if (bounceCount < maxBounces) {
-        // Ball spirals inward while bouncing
-        const progress = bounceCount / maxBounces;
-        const spiralAngle = ballFinalAngle + (1 - progress) * 720; // 2 full spirals
-        const spiralRadius = RADIUS - 15 - (progress * 40); // Spiral inward
+      if (progress >= 1) {
+        // PHASE 3: Final settling - ball naturally stops where it is
+        clearInterval(ballTimer);
         
-        const bounceX = CENTER + Math.cos((spiralAngle - 90) * Math.PI / 180) * spiralRadius;
-        const bounceY = CENTER + Math.sin((spiralAngle - 90) * Math.PI / 180) * spiralRadius;
+        // Ball settles at its current natural position (no sudden jumps!)
+        const naturalSettleRadius = settleRadius;
+        const finalX = CENTER + Math.cos((currentBallAngle - 90) * Math.PI / 180) * naturalSettleRadius;
+        const finalY = CENTER + Math.sin((currentBallAngle - 90) * Math.PI / 180) * naturalSettleRadius;
         
-        ballPositionX.setValue(bounceX);
-        ballPositionY.setValue(bounceY);
-        bounceCount++;
-      } else {
-        clearInterval(bounceTimer);
-        
-        // 5. BALL SETTLES AT FINAL POSITION
-        ballPositionX.setValue(ballFinalX);
-        ballPositionY.setValue(ballFinalY);
-        
-        // 6. CALCULATE WINNER BASED ON BALL POSITION
-        setTimeout(() => {
-          // Get final wheel rotation (accounting for animation)
-          const currentWheelRotation = finalWheelRotation % 360;
-          
-          // Calculate which segment the ball landed in
-          // Ball angle relative to the rotated wheel
-          const relativeAngle = (ballFinalAngle - currentWheelRotation + 360) % 360;
-          
-          // Find which segment this angle corresponds to
-          const segmentSize = 360 / items.length;
-          const winnerIndex = Math.floor(relativeAngle / segmentSize) % items.length;
-          const winner = items[winnerIndex];
-          
-          // Show the result
-          setSelectedItem(winner);
-          setIsSpinning(false);
-          onSpinComplete && onSpinComplete(winner);
-          
-          console.log(`Ball angle: ${ballFinalAngle.toFixed(1)}°, Wheel rotation: ${currentWheelRotation.toFixed(1)}°, Relative: ${relativeAngle.toFixed(1)}°, Winner: ${winner}`);
-        }, 500);
+        // Smooth final settling animation to the natural position
+        Animated.parallel([
+          Animated.timing(ballPositionX, {
+            toValue: finalX,
+            duration: 400,
+            useNativeDriver: false,
+          }),
+          Animated.timing(ballPositionY, {
+            toValue: finalY,
+            duration: 400,
+            useNativeDriver: false,
+          })
+        ]).start(() => {
+          // Calculate winner based on where ball naturally ended up
+          setTimeout(() => {
+            const currentWheelRotation = wheelSpins % 360;
+            // Use the ball's natural final angle instead of random
+            const ballNaturalAngle = currentBallAngle % 360;
+            const relativeAngle = (ballNaturalAngle - currentWheelRotation + 360) % 360;
+            const segmentSize = 360 / items.length;
+            const winnerIndex = Math.floor(relativeAngle / segmentSize) % items.length;
+            const winner = items[winnerIndex];
+            
+            setSelectedItem(winner);
+            setIsSpinning(false);
+            onSpinComplete && onSpinComplete(winner);
+            
+            console.log(`Ball natural angle: ${ballNaturalAngle.toFixed(1)}°, Wheel rotation: ${currentWheelRotation.toFixed(1)}°, Relative: ${relativeAngle.toFixed(1)}°, Winner: ${winner}`);
+          }, 200);
+        });
+        return;
       }
-    }, 150);
+
+      // PHASE 1 & 2: Ball spinning and slowing down
+      if (progress < 0.6) {
+        // PHASE 1: Ball spins with high speed, follows wheel edge
+        const speed = ballTotalSpins * (1 - progress * 0.3); // Gradually slow down
+        currentBallAngle += (speed / ballDuration) * animationInterval;
+        ballRadius = startRadius; // Stay at wheel edge
+      } else {
+        // PHASE 2: Ball starts spiraling inward while slowing down
+        const spiralProgress = (progress - 0.6) / 0.4; // 0 to 1 for spiral phase
+        const speed = ballTotalSpins * (0.7 - spiralProgress * 0.6); // Continue slowing
+        currentBallAngle += (speed / ballDuration) * animationInterval;
+        
+        // Spiral inward gradually
+        ballRadius = startRadius - (spiralProgress * (startRadius - settleRadius));
+        
+        // Add some randomness/wobble as ball loses momentum
+        const wobble = Math.sin(elapsedTime * 0.02) * spiralProgress * 8;
+        ballRadius += wobble;
+      }
+
+      // Update ball position
+      const ballX = CENTER + Math.cos((currentBallAngle - 90) * Math.PI / 180) * ballRadius;
+      const ballY = CENTER + Math.sin((currentBallAngle - 90) * Math.PI / 180) * ballRadius;
+      
+      ballPositionX.setValue(ballX);
+      ballPositionY.setValue(ballY);
+    }, animationInterval);
   };
 
   // Generate segment colors (alternating casino colors)

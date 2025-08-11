@@ -1,0 +1,123 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Circle with Casino Colors -->
+    <defs>
+        <radialGradient id="bgGradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+        </radialGradient>
+        <radialGradient id="wheelGradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+        </radialGradient>
+        <linearGradient id="redSegment" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#d62c2c;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#b91c1c;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="blackSegment" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2c2c2c;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#1c1c1c;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="greenSegment" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#0eac69;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#059652;stop-opacity:1" />
+        </linearGradient>
+        
+        <!-- Drop shadow filter -->
+        <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+            <feOffset dx="2" dy="2" result="offset"/>
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.5"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- Main Background -->
+    <circle cx="256" cy="256" r="256" fill="url(#bgGradient)"/>
+    
+    <!-- Outer Ring -->
+    <circle cx="256" cy="256" r="230" fill="#FFD700" stroke="#FFA500" stroke-width="4"/>
+    <circle cx="256" cy="256" r="215" fill="none" stroke="#16213e" stroke-width="2"/>
+    
+    <!-- Roulette Wheel Segments (8 segments for food items) -->
+    <!-- Segment 1 - Red -->
+    <path d="M 256 41 A 215 215 0 0 1 408.5 103.5 L 256 256 Z" fill="url(#redSegment)" stroke="#FFD700" stroke-width="2"/>
+    
+    <!-- Segment 2 - Black -->
+    <path d="M 408.5 103.5 A 215 215 0 0 1 470 256 L 256 256 Z" fill="url(#blackSegment)" stroke="#FFD700" stroke-width="2"/>
+    
+    <!-- Segment 3 - Green -->
+    <path d="M 470 256 A 215 215 0 0 1 408.5 408.5 L 256 256 Z" fill="url(#greenSegment)" stroke="#FFD700" stroke-width="2"/>
+    
+    <!-- Segment 4 - Red -->
+    <path d="M 408.5 408.5 A 215 215 0 0 1 256 471 L 256 256 Z" fill="url(#redSegment)" stroke="#FFD700" stroke-width="2"/>
+    
+    <!-- Segment 5 - Black -->
+    <path d="M 256 471 A 215 215 0 0 1 103.5 408.5 L 256 256 Z" fill="url(#blackSegment)" stroke="#FFD700" stroke-width="2"/>
+    
+    <!-- Segment 6 - Green -->
+    <path d="M 103.5 408.5 A 215 215 0 0 1 41 256 L 256 256 Z" fill="url(#greenSegment)" stroke="#FFD700" stroke-width="2"/>
+    
+    <!-- Segment 7 - Red -->
+    <path d="M 41 256 A 215 215 0 0 1 103.5 103.5 L 256 256 Z" fill="url(#redSegment)" stroke="#FFD700" stroke-width="2"/>
+    
+    <!-- Segment 8 - Black -->
+    <path d="M 103.5 103.5 A 215 215 0 0 1 256 41 L 256 256 Z" fill="url(#blackSegment)" stroke="#FFD700" stroke-width="2"/>
+
+    <!-- Food Icons on Segments -->
+    <!-- Burger -->
+    <text x="330" y="130" font-size="32" text-anchor="middle" fill="white" filter="url(#dropShadow)">🍔</text>
+    
+    <!-- Pizza -->
+    <text x="430" y="266" font-size="32" text-anchor="middle" fill="white" filter="url(#dropShadow)">🍕</text>
+    
+    <!-- Sushi -->
+    <text x="330" y="390" font-size="32" text-anchor="middle" fill="white" filter="url(#dropShadow)">🍣</text>
+    
+    <!-- Taco -->
+    <text x="256" y="425" font-size="32" text-anchor="middle" fill="white" filter="url(#dropShadow)">🌮</text>
+    
+    <!-- Pasta -->
+    <text x="182" y="390" font-size="32" text-anchor="middle" fill="white" filter="url(#dropShadow)">🍝</text>
+    
+    <!-- Chicken -->
+    <text x="82" y="266" font-size="32" text-anchor="middle" fill="white" filter="url(#dropShadow)">🍗</text>
+    
+    <!-- Chinese -->
+    <text x="182" y="130" font-size="32" text-anchor="middle" fill="white" filter="url(#dropShadow)">🥡</text>
+    
+    <!-- Salad -->
+    <text x="256" y="95" font-size="32" text-anchor="middle" fill="white" filter="url(#dropShadow)">🥗</text>
+
+    <!-- Center Circle -->
+    <circle cx="256" cy="256" r="80" fill="url(#wheelGradient)" stroke="#16213e" stroke-width="4"/>
+    <circle cx="256" cy="256" r="70" fill="none" stroke="#FFD700" stroke-width="2"/>
+    
+    <!-- Casino Chips Stack -->
+    <ellipse cx="240" cy="250" rx="15" ry="8" fill="#d62c2c" stroke="#b91c1c" stroke-width="1"/>
+    <ellipse cx="240" cy="247" rx="15" ry="8" fill="#0eac69" stroke="#059652" stroke-width="1"/>
+    <ellipse cx="240" cy="244" rx="15" ry="8" fill="#2c2c2c" stroke="#1c1c1c" stroke-width="1"/>
+    
+    <!-- Dice -->
+    <rect x="265" y="240" width="20" height="20" rx="3" fill="white" stroke="#16213e" stroke-width="1"/>
+    <circle cx="270" cy="245" r="1.5" fill="#16213e"/>
+    <circle cx="275" cy="250" r="1.5" fill="#16213e"/>
+    <circle cx="280" cy="255" r="1.5" fill="#16213e"/>
+    
+    <!-- App Title -->
+    <text x="256" y="280" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#16213e">FOOD</text>
+    <text x="256" y="300" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#16213e">CASINO</text>
+
+    <!-- Roulette Ball -->
+    <circle cx="380" cy="180" r="8" fill="white" stroke="#16213e" stroke-width="2" filter="url(#dropShadow)"/>
+    
+    <!-- Sparkles for Casino Effect -->
+    <text x="150" y="150" font-size="16" fill="#FFD700">✨</text>
+    <text x="350" y="120" font-size="12" fill="#FFD700">⭐</text>
+    <text x="380" y="350" font-size="14" fill="#FFD700">💎</text>
+    <text x="120" y="320" font-size="12" fill="#FFD700">✨</text>
+</svg>
